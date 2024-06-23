@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Example</title>
+</head>
+<body>
+  <div id="todo-list">
+    <!-- Todo items will be dynamically added here -->
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+  <script>
+    const socket = io('http://192.99.33.197:3002/'); // Replace with your server URL
+
+    socket.on('connect', () => {
+      console.log('Socket.IO connected.');
+    });
+
+    socket.on('initialData', (data) => {
+      console.log('Received initial data:', data);
+      displayTodos(data);
+    });
+
+    socket.on('change', (change) => {
+      console.log('Received change:', change);
+      handleTodoChange(change);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Socket.IO disconnected.');
+    });
+
+    function displayTodos(todos) {
+      const todoList = document.getElementById('todo-list');
+      todoList.innerHTML = '';
+      todos.forEach(todo => {
+        const todoItem = document.createElement('div');
+        todoItem.textContent = todo.title;
+        todoList.appendChild(todoItem);
+      });
+    }
+
+    function handleTodoChange(change) {
+      // Handle updates or additions to the todo list
+      // Example:
+      // const todoList = document.getElementById('todo-list');
+      // todoList.innerHTML += `<div>${change.operation} - ${change.fullDocument.title}</div>`;
+    }
+  </script>
+</body>
+</html>
